@@ -24,29 +24,40 @@ for station in map:
 path[src] = 0
 
 while queue:
-    # find min distance which wasn't marked as current
-    key_min = queue[0]
-    min_val = path[key_min]
-    for n in range(1, len(queue)):
-      x = queue[n];
-      if path[queue[n]] < min_val:
-        key_min = queue[n]  
-        min_val = path[key_min]
+  # find min distance which wasn't marked as current
+  key_min = queue[0]
+  min_val = path[key_min]
+  for n in range(1, len(queue)):
+    x = queue[n];
+    if path[queue[n]] < min_val:
+      key_min = queue[n]  
+      min_val = path[key_min]
 
-    cur = key_min
-    queue.remove(cur)
-    
-    for i in map[cur]:
-      alternate = map[cur][i] + path[cur]
-      if path[i] > alternate:
-        path[i] = alternate
-        adj_node[i] = cur
+  cur = key_min
+  queue.remove(cur)
+  
+  for i in map[cur]:
+    alternate = map[cur][i] + path[cur]
+    if path[i] > alternate:
+      path[i] = alternate
+      adj_node[i] = cur
 
-print(f'The path between {src} to {dest}')
-print(dest, end = '<-')
+# print(dest, end = '<-')
+# while True:
+#     dest = adj_node[dest]
+#     if dest is None:
+#         print("")
+#         break
+#     print(dest, end='<-')
+
+stops = [dest]
+destination = dest
 while True:
-    dest = adj_node[dest]
-    if dest is None:
-        print("")
-        break
-    print(dest, end='<-')
+  dest = adj_node[dest]
+  if dest is None:
+    print("")
+    break
+  stops.insert(0, dest)
+
+print(f'Your trip from {src} to {destination} includes {len(stops)} stops and will take {path[destination]} minutes')
+print(' -> '.join(stops))
