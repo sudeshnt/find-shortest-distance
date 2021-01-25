@@ -15,13 +15,14 @@ dest = 'H'
 path = {}
 adj_node = {}
 queue = []
-print(map)
+
 for station in map:
   path[station] = math.inf
   adj_node[station] = None
   queue.append(station)
 
 path[src] = 0
+
 while queue:
     # find min distance which wasn't marked as current
     key_min = queue[0]
