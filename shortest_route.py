@@ -1,16 +1,18 @@
 import math
 from route_map import RouteMap
-from util import Util
+from utils import Utils
 
-file_name = Util.get_file_name()
+utils = Utils()
+
+file_name = utils.get_file_name()
 route_map = RouteMap(file_name)
 
 map = route_map.map
-# src = route_map.get_input_station('on')
-# dest = route_map.get_input_station('off')
+src = route_map.get_input_station('on')
+dest = route_map.get_input_station('off')
 
-src = 'C'
-dest = 'H'
+# src = 'C'
+# dest = 'H'
 
 # initializing helpers
 path = {}

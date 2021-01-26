@@ -1,15 +1,15 @@
 class RouteMap:
 
-  def __init__(self, fileName):
-    self.init_route_map(fileName)
+  def __init__(self, file_name):
+    self.init_route_map(file_name)
 
-  def init_route_map(self, fileName):
+  def init_route_map(self, file_name):
     try:
-      with open('{}.csv'.format(fileName), 'r') as file:
+      with open('{}.csv'.format(file_name), 'r') as file:
         self.map = self.__generate_map(file)
     except EnvironmentError:
-      fileName = input('File not found. Enter a valid file name: ')
-      self.init_route_map(fileName)
+      file_name = input('File not found. Please check the file existance. If does enter the name correctly: ')
+      self.init_route_map(file_name)
 
   def __generate_map(self, file):
     map = {}
@@ -18,10 +18,16 @@ class RouteMap:
       src = values[0]
       dest = values[1]
       distance = int(values[2])
+      # map source -> destination distance
       if src in map.keys():
         map[src][dest] = distance
       else:
-        map[src] = {dest: distance}
+        map[src] = { dest: distance }
+      # map destination -> source distance
+      if dest in map.keys():
+        map[dest][src] = distance
+      else:
+        map[dest] = { src: distance }
     return map
 
   def get_input_station(self, type):
