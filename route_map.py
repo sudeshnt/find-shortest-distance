@@ -22,13 +22,12 @@ class RouteMap:
         map[src][dest] = distance
       else:
         map[src] = {dest: distance}
-    return map;
+    return map
 
   def get_input_station(self, type):
     while True:
-      src = input(f"What station are you getting {type} the train?")
+      src = input(f'What station are you getting {type} the train?')
       if src not in self.map.keys():
-          print("Not a valid station.")
+          print('Not a valid station.')
       else:
-        return src;
-        break
+        return src

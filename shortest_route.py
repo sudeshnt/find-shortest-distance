@@ -2,62 +2,61 @@ import math
 from route_map import RouteMap
 from util import Util
 
-fileName = Util.get_file_name();
-mapclass = RouteMap(fileName);
+file_name = Util.get_file_name()
+route_map = RouteMap(file_name)
 
-map = mapclass.map;
-# src = mapclass.get_input_station('on')
-# dest = mapclass.get_input_station('off')
+map = route_map.map
+# src = route_map.get_input_station('on')
+# dest = route_map.get_input_station('off')
 
 src = 'C'
 dest = 'H'
 
+# initializing helpers
 path = {}
-adj_node = {}
+adjacent = {}
 queue = []
 
 for station in map:
-  path[station] = math.inf
-  adj_node[station] = None
+  path[station] = 0 if station == src else math.inf
+  adjacent[station] = None
   queue.append(station)
 
-path[src] = 0
-
+# 
 while queue:
   # find min distance which wasn't marked as current
   key_min = queue[0]
   min_val = path[key_min]
-  for n in range(1, len(queue)):
-    x = queue[n];
-    if path[queue[n]] < min_val:
-      key_min = queue[n]  
+  for index in range(1, len(queue)):
+    station = queue[index]
+    if path[station] < min_val:
+      key_min = station  
       min_val = path[key_min]
 
   cur = key_min
   queue.remove(cur)
   
+  # update path and adjacent with the nearest station
   for i in map[cur]:
     alternate = map[cur][i] + path[cur]
     if path[i] > alternate:
       path[i] = alternate
-      adj_node[i] = cur
+      adjacent[i] = cur
 
-# print(dest, end = '<-')
-# while True:
-#     dest = adj_node[dest]
-#     if dest is None:
-#         print("")
-#         break
-#     print(dest, end='<-')
-
+# finding stops from destination to source
 stops = [dest]
-destination = dest
 while True:
-  dest = adj_node[dest]
+  dest = adjacent[dest]
   if dest is None:
-    print("")
     break
   stops.insert(0, dest)
 
-print(f'Your trip from {src} to {destination} includes {len(stops)} stops and will take {path[destination]} minutes')
-print(' -> '.join(stops))
+# printing results
+number_of_stops = len(stops) - 1
+destination = stops[number_of_stops]
+time_taken = path[destination]
+if time_taken == math.inf:
+  print(f'Sorry, there is no route available from {src} to {destination}')
+else:
+  print(f'Your trip from {src} to {destination} includes {number_of_stops} stops and will take {time_taken} minutes')
+  print(' -> '.join(stops))
