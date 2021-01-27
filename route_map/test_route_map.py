@@ -1,6 +1,6 @@
 import unittest
 from unittest import mock
-from route_map import RouteMap
+from route_map.route_map import RouteMap
 import csv
 
 class TestRouteMap(unittest.TestCase):

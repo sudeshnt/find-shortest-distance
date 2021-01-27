@@ -14,7 +14,7 @@ class TestShortestRoute(unittest.TestCase):
 
   @mock.patch.object(Utils, 'get_file_name', return_value='routes')
   def test_get_file_name(self, mock_get_file_name):
-    print('_get_file should call get_file_name in Utils')
+    print('get_file should call get_file_name in Utils')
     file_name = self.shortest_route._get_file_name()
     mock_get_file_name.assert_called()
     self.assertEqual(file_name, 'routes')
@@ -35,7 +35,7 @@ class TestShortestRoute(unittest.TestCase):
     self.assertEqual(self.shortest_route.src, 'on')
 
   def test_initialize_helpers(self):
-    print('_initialize_helpers should return the correct helpers')
+    print('initialize_helpers should return the correct helpers')
     self.shortest_route.src = 'A'
     self.shortest_route.route_map.map = { 'A': { 'B': 5 }, 'B': { 'A': 5 }}
     dist, adj, queue = self.shortest_route._initialize_helpers()
@@ -44,7 +44,7 @@ class TestShortestRoute(unittest.TestCase):
     self.assertEqual(queue, ['A', 'B'])
 
   def test_calculate_shortest_distance_and_stops(self):
-    print('_calculate_shortest_distance_and_stops should return stops and distance map')
+    print('calculate_shortest_distance_and_stops should return stops and distance map')
     self.shortest_route.src = 'A'
     self.shortest_route.dest = 'B'
     self.shortest_route.route_map.map = { 'A': { 'B': 5 }, 'B': { 'A': 5 }}

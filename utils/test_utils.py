@@ -1,6 +1,6 @@
 import unittest
 from unittest import mock
-from utils import Utils
+from utils.utils import Utils
 from argparse import Namespace
 
 def get_input(text):
