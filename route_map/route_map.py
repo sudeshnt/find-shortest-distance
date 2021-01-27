@@ -11,7 +11,7 @@ class RouteMap:
       with open(os.path.dirname(__file__) + '/../{}.csv'.format(self.file_name), 'r') as file:
         self.map = self._generate_map(file)
     except EnvironmentError:
-      self.file_name = input('File not found. Please check the file existance. If does enter the name correctly: ')
+      self.file_name = input('File not found. Please check the file existance. If does enter the name correctly: (routes)') or 'routes'
       self.init_route_map()
 
   def _generate_map(self, file):
@@ -34,9 +34,10 @@ class RouteMap:
     return map
 
   def get_input_station(self, type):
-    src = input(f'What station are you getting {type} the train?')
-    if src not in self.map.keys():
-        print('Not a valid station.')
-        self.get_input_station(type)
-    else:
-      return src
+    while True:
+      station = input(f'What station are you getting {type} the train?')
+      if station.lower() not in self.map.keys() and station.upper() not in self.map.keys():
+          print('Not a valid station.')
+          continue
+      else:
+        return station.upper()
