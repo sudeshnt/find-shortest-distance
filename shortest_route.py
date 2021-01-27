@@ -3,20 +3,18 @@ from route_map.route_map import RouteMap
 from utils.utils import Utils
 
 class ShortestRoute:
-  
-  def __init__(self):
-    self._init_route_map()
-    
-  def _init_route_map(self):
+
+  def _get_file_name(self):
     utils = Utils()
-    file_name = utils.get_file_name()
+    return utils.get_file_name()
+
+  def init_route_map(self):
+    file_name = self._get_file_name()
     self.route_map = RouteMap(file_name)
 
   def get_src_dest_input(self):
-    self.src = 'C'
-    self.dest = 'H'
-    # self.src = self.route_map.get_input_station('on')
-    # self.dest = self.route_map.get_input_station('off')
+    self.src = self.route_map.get_input_station('on')
+    self.dest = self.route_map.get_input_station('off')
 
   def _initialize_helpers(self):
     distance_from_src = {}

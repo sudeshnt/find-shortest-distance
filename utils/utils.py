@@ -7,8 +7,7 @@ class Utils:
     if args.file:
       fileName = args.file
     else:
-      # fileName = input('Please provide csv file name (routes): ') or 'routes'
-      fileName = 'routes'
+      fileName = input('Please provide csv file name (routes): ') or 'routes'
     return fileName
 
   def _get_cmd_argument(self, args=[]):
