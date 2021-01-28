@@ -19,36 +19,36 @@ class ShortestRoute:
   def _initialize_helpers(self):
     distance_from_src = {}
     adjacent_node = {}
-    queue = []
+    unvisited = []
 
     for station in self.route_map.map:
       distance_from_src[station] = 0 if station == self.src else math.inf
       adjacent_node[station] = None
-      queue.append(station)
+      unvisited.append(station)
 
-    return distance_from_src, adjacent_node, queue
+    return distance_from_src, adjacent_node, unvisited
   
   def _calculate_shortest_distance_and_stops(self):
-    distance_from_src, adjacent_node, queue = self._initialize_helpers()
+    distance_from_src, adjacent_node, unvisited = self._initialize_helpers()
 
-    while queue:
-      key_min = queue[0]
-      min_val = distance_from_src[key_min]
-      for index in range(1, len(queue)):
-        station = queue[index]
-        if distance_from_src[station] < min_val:
-          key_min = station  
-          min_val = distance_from_src[key_min]
+    while unvisited:
+      currently_visited = unvisited[0]
+      distance_from_src_to_currently_visited = distance_from_src[currently_visited]
+      for index in range(1, len(unvisited)):
+        unvisited_station = unvisited[index]
+        if distance_from_src[unvisited_station] < distance_from_src_to_currently_visited:
+          currently_visited = unvisited_station  
+          distance_from_src_to_currently_visited = distance_from_src[currently_visited]
 
-      cur = key_min
-      queue.remove(cur)
+      current_node = currently_visited
+      unvisited.remove(current_node)
       
       # update distance_from_src and adjacent_node with the nearest station
-      for i in self.route_map.map[cur]:
-        alternate = self.route_map.map[cur][i] + distance_from_src[cur]
-        if distance_from_src[i] > alternate:
-          distance_from_src[i] = alternate
-          adjacent_node[i] = cur
+      for neighbour in self.route_map.map[current_node]:
+        alternate = self.route_map.map[current_node][neighbour] + distance_from_src[current_node]
+        if alternate < distance_from_src[neighbour]:
+          distance_from_src[neighbour] = alternate
+          adjacent_node[neighbour] = current_node
 
     # finding stops from destination to source
     stops = [self.dest]
