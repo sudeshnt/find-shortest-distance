@@ -32,20 +32,17 @@ class ShortestRoute:
     distance_from_src, adjacent_node, unvisited = self._initialize_helpers()
 
     while unvisited:
-      current_node = unvisited[0]
-      distance_from_src_to_currently_visited = distance_from_src[current_node]
-      for index in range(1, len(unvisited)):
-        unvisited_station = unvisited[index]
-        if distance_from_src[unvisited_station] < distance_from_src_to_currently_visited:
-          current_node = unvisited_station  
-          distance_from_src_to_currently_visited = distance_from_src[current_node]
+      current_node = None
+      for node in unvisited:
+        if (current_node == None or distance_from_src[node] < distance_from_src[current_node]):
+          current_node = node
 
       unvisited.remove(current_node)
       
       # update distance_from_src and adjacent_node with the nearest station
-      distance_to_neighbours = self.route_map.map[current_node]
-      for neighbour in distance_to_neighbours:
-        alternate = distance_to_neighbours[neighbour] + distance_from_src[current_node]
+      distance_from_current = self.route_map.map[current_node]
+      for neighbour in distance_from_current:
+        alternate = distance_from_src[current_node] + distance_from_current[neighbour]
         if alternate < distance_from_src[neighbour]:
           distance_from_src[neighbour] = alternate
           adjacent_node[neighbour] = current_node
