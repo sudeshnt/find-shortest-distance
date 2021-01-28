@@ -32,27 +32,27 @@ class ShortestRoute:
     distance_from_src, adjacent_node, unvisited = self._initialize_helpers()
 
     while unvisited:
-      currently_visited = unvisited[0]
-      distance_from_src_to_currently_visited = distance_from_src[currently_visited]
+      current_node = unvisited[0]
+      distance_from_src_to_currently_visited = distance_from_src[current_node]
       for index in range(1, len(unvisited)):
         unvisited_station = unvisited[index]
         if distance_from_src[unvisited_station] < distance_from_src_to_currently_visited:
-          currently_visited = unvisited_station  
-          distance_from_src_to_currently_visited = distance_from_src[currently_visited]
+          current_node = unvisited_station  
+          distance_from_src_to_currently_visited = distance_from_src[current_node]
 
-      current_node = currently_visited
       unvisited.remove(current_node)
       
       # update distance_from_src and adjacent_node with the nearest station
-      for neighbour in self.route_map.map[current_node]:
-        alternate = self.route_map.map[current_node][neighbour] + distance_from_src[current_node]
+      distance_to_neighbours = self.route_map.map[current_node]
+      for neighbour in distance_to_neighbours:
+        alternate = distance_to_neighbours[neighbour] + distance_from_src[current_node]
         if alternate < distance_from_src[neighbour]:
           distance_from_src[neighbour] = alternate
           adjacent_node[neighbour] = current_node
 
     # finding stops from destination to source
-    stops = [self.dest]
     dest = self.dest
+    stops = [dest]
     while True:
       dest = adjacent_node[dest]
       if dest is None:
