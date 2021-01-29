@@ -10,7 +10,6 @@ class TestShortestRoute(unittest.TestCase):
   @mock.patch.object(Utils, 'get_file_name', return_value='routes')
   def setUp(self, mock_get_file_name):
     self.shortest_route = ShortestRoute()
-    self.shortest_route.init_route_map()
 
   @mock.patch.object(Utils, 'get_file_name', return_value='routes')
   def test_get_file_name(self, mock_get_file_name):
@@ -19,15 +18,15 @@ class TestShortestRoute(unittest.TestCase):
     mock_get_file_name.assert_called()
     self.assertEqual(file_name, 'routes')
 
-  @mock.patch.object(ShortestRoute, '_get_file_name', return_value='routes')
-  def test_init_route_map(self, mock_get_file_name):
-    print('init_route_map should call _get_file_name')
-    self.shortest_route.init_route_map()
-    mock_get_file_name.assert_called()
-    self.assertIsInstance(self.shortest_route.route_map, RouteMap)
-    self.assertEqual(self.shortest_route.route_map.file_name, 'routes')
+  @mock.patch('builtins.input', return_value="A")
+  @mock.patch('builtins.print')
+  def test_get_input_station(self, mock_print, mock_input):
+    print('get_input_station should prompt correct station type & return')
+    station = self.shortest_route._get_input_station('on')
+    mock_input.assert_called_with('What station are you getting on the train?')
+    self.assertEqual(station, 'A')
 
-  @mock.patch.object(RouteMap, 'get_input_station', return_value='on')
+  @mock.patch.object(ShortestRoute, '_get_input_station', return_value='on')
   def test_get_src_dest_input(self, mock_get_input_station):
     print('get_src_dest_input should ask for user input and initialize src & dest')
     self.shortest_route.get_src_dest_input()
@@ -37,7 +36,7 @@ class TestShortestRoute(unittest.TestCase):
   def test_initialize_helpers(self):
     print('initialize_helpers should return the correct helpers')
     self.shortest_route.src = 'A'
-    self.shortest_route.route_map.map = { 'A': { 'B': 5 }, 'B': { 'A': 5 }}
+    self.shortest_route.map = { 'A': { 'B': 5 }, 'B': { 'A': 5 }}
     dist, adj, queue = self.shortest_route._initialize_helpers()
     self.assertEqual(dist, {'A': 0, 'B': math.inf})
     self.assertEqual(adj, {'A': None, 'B': None})
@@ -47,7 +46,7 @@ class TestShortestRoute(unittest.TestCase):
     print('calculate_shortest_distance_and_stops should return stops and distance map')
     self.shortest_route.src = 'A'
     self.shortest_route.dest = 'B'
-    self.shortest_route.route_map.map = { 'A': { 'B': 5 }, 'B': { 'A': 5 }}
+    self.shortest_route.map = { 'A': { 'B': 5 }, 'B': { 'A': 5 }}
     stops, distance = self.shortest_route._calculate_shortest_distance_and_stops()
     self.assertEqual(stops, ['A', 'B'])
     self.assertEqual(distance, {'A': 0, 'B': 5})
@@ -58,3 +57,4 @@ class TestShortestRoute(unittest.TestCase):
     self.shortest_route.src = 'A'
     self.shortest_route.get_shortest_route()
     mock_print.assert_called_with('A -> B')
+

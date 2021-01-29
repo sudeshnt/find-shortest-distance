@@ -2,26 +2,34 @@ import math
 from route_map.route_map import RouteMap
 from utils.utils import Utils
 
-class ShortestRoute:
+class ShortestRoute(RouteMap):
+  def __init__(self):
+    file_name = self._get_file_name()
+    RouteMap.__init__(self, file_name)
 
   def _get_file_name(self):
     utils = Utils()
     return utils.get_file_name()
 
-  def init_route_map(self):
-    file_name = self._get_file_name()
-    self.route_map = RouteMap(file_name)
-
+  def _get_input_station(self, type):
+    while True:
+      station = input(f'What station are you getting {type} the train?')
+      if station.lower() not in self.map.keys() and station.upper() not in self.map.keys():
+          print('Not a valid station.')
+          continue
+      else:
+        return station.upper()
+  
   def get_src_dest_input(self):
-    self.src = self.route_map.get_input_station('on')
-    self.dest = self.route_map.get_input_station('off')
+    self.src = self._get_input_station('on')
+    self.dest = self._get_input_station('off')
 
   def _initialize_helpers(self):
     distance_from_src = {}
     adjacent_node = {}
     unvisited = []
 
-    for station in self.route_map.map:
+    for station in self.map:
       distance_from_src[station] = 0 if station == self.src else math.inf
       adjacent_node[station] = None
       unvisited.append(station)
@@ -40,7 +48,7 @@ class ShortestRoute:
       unvisited.remove(current_node)
       
       # update distance_from_src and adjacent_node with the nearest station
-      distance_from_current = self.route_map.map[current_node]
+      distance_from_current = self.map[current_node]
       for neighbour in distance_from_current:
         alternate = distance_from_src[current_node] + distance_from_current[neighbour]
         if alternate < distance_from_src[neighbour]:
