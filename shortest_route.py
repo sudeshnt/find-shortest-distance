@@ -1,11 +1,11 @@
 import math
-from route.route import Route
+from routes.routes import Routes
 from utils.utils import Utils
 
-class ShortestRoute(Route):
+class ShortestRoute(Routes):
   def __init__(self):
     file_name = Utils.get_file_name()
-    Route.__init__(self, file_name)
+    Routes.__init__(self, file_name)
 
   def _get_input_station(self, type):
     while True:
@@ -44,9 +44,9 @@ class ShortestRoute(Route):
       unvisited.remove(current_node)
       
       # update distance_from_src and adjacent_node with the nearest station
-      distance_from_current = self._map[current_node]
-      for neighbor in distance_from_current:
-        alternate = distance_from_src[current_node] + distance_from_current[neighbor]
+      distances_from_current = self._map[current_node]
+      for neighbor in distances_from_current:
+        alternate = distance_from_src[current_node] + distances_from_current[neighbor]
         if alternate < distance_from_src[neighbor]:
           distance_from_src[neighbor] = alternate
           adjacent_node[neighbor] = current_node

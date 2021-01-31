@@ -3,7 +3,7 @@ import math
 from unittest import mock
 from shortest_route import ShortestRoute
 from utils.utils import Utils
-from route.route import Route
+from routes.routes import Routes
 
 class TestShortestRoute(unittest.TestCase):
   

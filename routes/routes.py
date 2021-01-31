@@ -1,20 +1,20 @@
 import os.path
 
-class Route:
+class Routes:
 
   def __init__(self, file_name):
     self._file_name = file_name
-    self._init_route()
+    self._init_map_from_file()
 
-  def _init_route(self):
+  def _init_map_from_file(self):
     try:
       with open(os.path.dirname(__file__) + '/../{}.csv'.format(self._file_name), 'r') as file:
-        self._map = self._generate_route(file)
+        self._map = self._generate_map(file)
     except EnvironmentError:
       self._file_name = input('File not found. Please check the file existence. If does enter the name correctly: (routes)') or 'routes'
-      self._init_route()
+      self._init_map_from_file()
 
-  def _generate_route(self, file):
+  def _generate_map(self, file):
     map = {}
     for line in file:
       values = line.split(',')
