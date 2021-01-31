@@ -3,15 +3,15 @@ import os.path
 class RouteMap:
 
   def __init__(self, file_name):
-    self.file_name = file_name
+    self._file_name = file_name
     self._init_route_map()
 
   def _init_route_map(self):
     try:
-      with open(os.path.dirname(__file__) + '/../{}.csv'.format(self.file_name), 'r') as file:
+      with open(os.path.dirname(__file__) + '/../{}.csv'.format(self._file_name), 'r') as file:
         self.map = self._generate_map(file)
     except EnvironmentError:
-      self.file_name = input('File not found. Please check the file existance. If does enter the name correctly: (routes)') or 'routes'
+      self._file_name = input('File not found. Please check the file existence. If does enter the name correctly: (routes)') or 'routes'
       self._init_route_map()
 
   def _generate_map(self, file):

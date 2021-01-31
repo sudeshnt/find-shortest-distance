@@ -8,8 +8,7 @@ class ShortestRoute(RouteMap):
     RouteMap.__init__(self, file_name)
 
   def _get_file_name(self):
-    utils = Utils()
-    return utils.get_file_name()
+    return Utils.get_file_name()
 
   def _get_input_station(self, type):
     while True:
