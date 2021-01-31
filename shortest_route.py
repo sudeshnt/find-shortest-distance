@@ -1,19 +1,16 @@
 import math
-from route_map.route_map import RouteMap
+from route.route import Route
 from utils.utils import Utils
 
-class ShortestRoute(RouteMap):
+class ShortestRoute(Route):
   def __init__(self):
-    file_name = self._get_file_name()
-    RouteMap.__init__(self, file_name)
-
-  def _get_file_name(self):
-    return Utils.get_file_name()
+    file_name = Utils.get_file_name()
+    Route.__init__(self, file_name)
 
   def _get_input_station(self, type):
     while True:
       station = input(f'What station are you getting {type} the train?')
-      if station.lower() not in self.map.keys() and station.upper() not in self.map.keys():
+      if station.lower() not in self._map.keys() and station.upper() not in self._map.keys():
           print('Not a valid station.')
           continue
       else:
@@ -28,7 +25,7 @@ class ShortestRoute(RouteMap):
     adjacent_node = {}
     unvisited = []
 
-    for station in self.map:
+    for station in self._map:
       distance_from_src[station] = 0 if station == self.src else math.inf
       adjacent_node[station] = None
       unvisited.append(station)
@@ -47,12 +44,12 @@ class ShortestRoute(RouteMap):
       unvisited.remove(current_node)
       
       # update distance_from_src and adjacent_node with the nearest station
-      distance_from_current = self.map[current_node]
-      for neighbour in distance_from_current:
-        alternate = distance_from_src[current_node] + distance_from_current[neighbour]
-        if alternate < distance_from_src[neighbour]:
-          distance_from_src[neighbour] = alternate
-          adjacent_node[neighbour] = current_node
+      distance_from_current = self._map[current_node]
+      for neighbor in distance_from_current:
+        alternate = distance_from_src[current_node] + distance_from_current[neighbor]
+        if alternate < distance_from_src[neighbor]:
+          distance_from_src[neighbor] = alternate
+          adjacent_node[neighbor] = current_node
 
     # finding stops from destination to source
     dest = self.dest
